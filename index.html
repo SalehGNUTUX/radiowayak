@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>راديو وياك - Radio Wayak</title>
 
-    <link rel="icon" type="image/jpeg" href="album_art.1766384036.jpg">
+    <link rel="icon" id="favicon" type="image/jpeg" href="album_art.1766384036.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -15,34 +16,75 @@
             font-family: 'IBM Plex Sans Arabic', sans-serif;
             background: #000; color: #fff; margin: 0; overflow: hidden;
         }
-        .ios-glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        /* السلايدر كخلفية كاملة */
+        #slider-anchor {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            width: 100vw;
+            height: 100vh;
+        }
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.35); /* تعتيم لبروز الواجهة */
+        }
+
+        /* حاوية الشعار التفاعلي */
+        .logo-container {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            z-index: 999; /* لضمان الظهور فوق كل شيء */
+            width: 120px;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 15px;
+            transition: all 0.5s ease;
+        }
+        .logo-container:hover {
+            transform: scale(1.1) rotate(3deg);
         }
         .logo-top-right {
-            position: absolute; top: 20px; right: 20px; z-index: 100;
-            width: 120px;
+            width: 100%;
+            height: auto;
+            display: block;
         }
-        .bg-glow {
-            position: absolute; inset: 0;
-            background: radial-gradient(circle at center, #1e3a8a 0%, #000 100%);
-            z-index: -1; opacity: 0.5;
+        /* تأثير اللمعان */
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: -100%; left: -100%; width: 50%; height: 300%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: rotate(45deg);
+            pointer-events: none;
         }
-        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+        .logo-container:hover::after {
+            transition: 0.7s;
+            left: 150%;
+            top: 150%;
+        }
+
+        .ios-glass {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
 
-    <img src="logo_w2_dMEr-CXiI7FcuA-HT2GJ5.svg" class="logo-top-right" alt="Logo">
+    <div id="slider-anchor"></div>
+
+    <div class="logo-container" onclick="location.reload()" title="إعادة تنشيط الموقع">
+        <img src="logo_w2_dMEr-CXiI7FcuA-HT2GJ5.svg" class="logo-top-right" alt="Logo">
+    </div>
 
     <div id="app" class="h-screen w-full flex flex-col items-center justify-between p-6 relative">
-
-        <main id="content-area" class="flex-1 w-full max-w-lg z-10 flex flex-col items-center justify-center overflow-hidden">
-            </main>
+        <main id="content-area" class="flex-1 w-full max-w-lg z-10 flex flex-col items-center justify-center overflow-hidden"></main>
 
         <nav class="w-full max-w-md ios-glass rounded-full p-2 flex justify-around items-center z-20 mb-4 shadow-2xl">
             <button onclick="app.showTab('radio')" id="btn-radio" class="nav-btn p-4 rounded-full transition-all">الراديو</button>
@@ -52,11 +94,12 @@
         </nav>
     </div>
 
+    <script src="imageSlider/راديو وياك_files/swiper-bundle.min.js"></script>
     <script src="js/radio-engine.js"></script>
     <script src="js/schedule-data.js"></script>
     <script src="js/news-engine.js"></script>
     <script src="js/settings-engine.js"></script>
-    <script src="js/articles-engine.js"></script>
+    <script src="js/slider-engine.js"></script>
     <script src="js/app-logic.js"></script>
 </body>
 </html>
