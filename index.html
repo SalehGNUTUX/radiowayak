@@ -1,173 +1,62 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>راديو وياك - Radio Wayak</title>
+
+    <link rel="icon" type="image/jpeg" href="album_art.1766384036.jpg">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
-      :root {
-        --glass-border: rgba(255, 255, 255, 0.08);
-        --glass-highlight: rgba(255, 255, 255, 0.15);
-        --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
-      }
-
-      body {
-        font-family: 'IBM Plex Sans Arabic', sans-serif;
-        background-color: #000000;
-        color: #f2f2f7; /* iOS Light Text */
-        overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        font-weight: 400; /* STRICTLY REGULAR */
-      }
-
-      /* iOS Liquid Glass Effect */
-      .ios-glass {
-        background: rgba(30, 30, 40, 0.35);
-        backdrop-filter: blur(25px) saturate(180%);
-        -webkit-backdrop-filter: blur(25px) saturate(180%);
-        border: 1px solid var(--glass-border);
-        box-shadow: var(--glass-shadow);
-        border-top: 1px solid var(--glass-highlight); /* Subtle top highlight */
-      }
-      
-      .ios-glass-heavy {
-        background: rgba(20, 20, 25, 0.75);
-        backdrop-filter: blur(40px) saturate(180%);
-        -webkit-backdrop-filter: blur(40px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      .ios-input {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.3s ease;
-      }
-      .ios-input:focus {
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(139, 92, 246, 0.4);
-        box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
-      }
-
-      /* Entrance Animations */
-      @keyframes soft-enter {
-        0% { opacity: 0; transform: scale(0.96) translateY(10px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); }
-      }
-      .animate-soft-enter {
-        animation: soft-enter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-      }
-
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.15); 
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.25); 
-      }
-
-      /* Range Slider Customization (iOS Style) */
-      input[type=range] {
-        -webkit-appearance: none;
-        background: transparent;
-      }
-      input[type=range]::-webkit-slider-runnable-track {
-        width: 100%;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 2px;
-      }
-      input[type=range]::-webkit-slider-thumb {
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        background: #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        margin-top: -8px;
-        -webkit-appearance: none;
-        transition: transform 0.2s;
-      }
-      input[type=range]:active::-webkit-slider-thumb {
-        transform: scale(1.1);
-      }
-
-      /* 
-         Markdown Styles - ADJUSTED FOR AUTOMATIC SPACING
-      */
-      
-      /* 1. Important Text (White) */
-      .markdown-content strong { 
-        font-weight: 400; /* Regular */
-        color: #ffffff !important; 
-      }
-
-      /* 2. Quranic Verses (Cyan) */
-      .markdown-content em { 
-        font-style: normal; 
-        font-weight: 400; /* Regular */
-        color: #7ff4ff !important; 
-      }
-
-      /* 3. Prophetic Hadiths (Green) */
-      .markdown-content code {
-        font-family: inherit !important; 
-        background-color: transparent !important;
-        padding: 0;
-        border: none;
-        font-weight: 400; /* Regular */
-        white-space: normal !important; 
-        color: #95f095 !important; 
-        font-size: 1em;
-      }
-
-      /* Base spacing and links - Optimized for Automatic Flow */
-      .markdown-content p { 
-        margin: 0;
-        margin-bottom: 1em; /* Proportional to font size */
-        line-height: 1.6;
-      }
-      .markdown-content p:last-child {
-        margin-bottom: 0;
-      }
-
-      .markdown-content ul, .markdown-content ol { padding-right: 1.2rem; margin-bottom: 1em; }
-      .markdown-content a { color: #d8b4fe; text-decoration: underline; }
-      
-      /* Headers also map to Important (White, Regular) */
-      .markdown-content h1, .markdown-content h2, .markdown-content h3 { 
-        font-weight: 400; /* Regular */
-        margin: 0.6rem 0 1rem 0; 
-        color: #ffffff;
-      }
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: #000; color: #fff; margin: 0; overflow: hidden;
+        }
+        .ios-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo-top-right {
+            position: absolute; top: 20px; right: 20px; z-index: 100;
+            width: 120px;
+        }
+        .bg-glow {
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at center, #1e3a8a 0%, #000 100%);
+            z-index: -1; opacity: 0.5;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "marked": "https://aistudiocdn.com/marked@^14.1.1"
-  }
-}
-</script>
 </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<body>
+    <div class="bg-glow"></div>
+
+    <img src="logo_w2_dMEr-CXiI7FcuA-HT2GJ5.svg" class="logo-top-right" alt="Logo">
+
+    <div id="app" class="h-screen w-full flex flex-col items-center justify-between p-6 relative">
+
+        <main id="content-area" class="flex-1 w-full max-w-lg z-10 flex flex-col items-center justify-center overflow-hidden">
+            </main>
+
+        <nav class="w-full max-w-md ios-glass rounded-full p-2 flex justify-around items-center z-20 mb-4 shadow-2xl">
+            <button onclick="app.showTab('radio')" id="btn-radio" class="nav-btn p-4 rounded-full transition-all">الراديو</button>
+            <button onclick="app.showTab('schedule')" id="btn-schedule" class="nav-btn p-4 rounded-full text-white/30 transition-all">الجدول</button>
+            <button onclick="app.showTab('news')" id="btn-news" class="nav-btn p-4 rounded-full text-white/30 transition-all">الأخبار</button>
+            <button onclick="app.showTab('settings')" id="btn-settings" class="nav-btn p-4 rounded-full text-white/30 transition-all">الإعدادات</button>
+        </nav>
+    </div>
+
+    <script src="js/radio-engine.js"></script>
+    <script src="js/schedule-data.js"></script>
+    <script src="js/news-engine.js"></script>
+    <script src="js/settings-engine.js"></script>
+    <script src="js/articles-engine.js"></script>
+    <script src="js/app-logic.js"></script>
+</body>
 </html>
