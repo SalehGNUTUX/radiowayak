@@ -1,14 +1,47 @@
-body { background-color: #000; color: #fff; direction: rtl; }
-.ios-glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+<style>
+/* جعل السلايدر خلفية كاملة */
+#slider-anchor {
+position: fixed;
+inset: 0;
+z-index: -1; /* خلف كل العناصر */
+width: 100vw;
+height: 100vh;
 }
-.bg-glow {
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at center, #1e3a8a 0%, #000 100%);
-    z-index: -1; opacity: 0.5;
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* لملء الشاشة بالكامل */
+    filter: brightness(0.4); /* تعتيم الخلفية لبروز أزرار التحكم */
 }
-.nav-btn { padding: 10px 20px; border-radius: 20px; color: rgba(255,255,255,0.4); transition: 0.3s; }
-.nav-btn.active { color: #3b82f6; background: rgba(255,255,255,0.05); }
+
+/* تأثير اللمعان والحركة للشعار */
+.logo-top-right {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+.logo-top-right:hover {
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.8));
+}
+/* تأثير اللمعان (Shine effect) */
+.logo-top-right::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+    display: block;
+}
+.logo-top-right:hover::after {
+    left: 100%;
+}
+</style>
+
+<img src="logo_w2_dMEr-CXiI7FcuA-HT2GJ5.svg"
+class="logo-top-right"
+onclick="location.reload()"
+title="إعادة تنشيط الموقع"
+alt="Logo">
