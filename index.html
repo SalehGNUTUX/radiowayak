@@ -71,6 +71,18 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* أنيميشن التنبيهات في أعلى الصفحة */
+        @keyframes alert-slide-down {
+            from { opacity: 0; transform: translate(-50%, -20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        @keyframes alert-slide-up {
+            from { opacity: 1; transform: translate(-50%, 0); }
+            to { opacity: 0; transform: translate(-50%, -20px); }
+        }
+        .alert-in { animation: alert-slide-down 0.4s ease-out forwards; }
+        .alert-out { animation: alert-slide-up 0.4s ease-in forwards; }
     </style>
 </head>
 <body>
