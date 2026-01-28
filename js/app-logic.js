@@ -143,6 +143,27 @@ const app = {
             if (img) img.classList.remove('scale-105');
             cancelAnimationFrame(this.animationId);
         }
+    },
+
+    showAlert(message) {
+        const existing = document.getElementById('custom-alert');
+        if (existing) existing.remove();
+        
+        const alertBox = document.createElement('div');
+        alertBox.id = 'custom-alert';
+        alertBox.className = "fixed top-6 left-1/2 -translate-x-1/2 z-[1000] ios-glass px-6 py-3 rounded-full shadow-2xl border border-white/20 text-white text-sm font-bold alert-in";
+        alertBox.innerHTML = `
+            <div class="flex items-center gap-3">
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                ${message}
+            </div>`;
+        
+        document.body.appendChild(alertBox);
+        
+        setTimeout(() => {
+            alertBox.classList.replace('alert-in', 'alert-out');
+            setTimeout(() => alertBox.remove(), 400);
+        }, 3000);
     }
 };
 
