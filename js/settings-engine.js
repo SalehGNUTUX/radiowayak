@@ -4,17 +4,20 @@ const SettingsEngine = {
     setSleepTimer(minutes) {
         if (this.sleepTimeout) clearTimeout(this.sleepTimeout);
         if (minutes === 0 || minutes === "" || !minutes) {
-            alert("تم إلغاء المؤقت أو لم يتم إدخال وقت صحيح");
+            if (typeof app !== 'undefined') app.showAlert("تم إلغاء المؤقت");
             return;
         }
 
-        alert(`سيتم إيقاف الراديو تلقائياً بعد ${minutes} دقيقة`);
+        if (typeof app !== 'undefined') app.showAlert(`سيتم إيقاف الراديو بعد ${minutes} دقيقة`);
+        
         this.sleepTimeout = setTimeout(() => {
             if (typeof RadioEngine !== 'undefined') {
                 RadioEngine.audio.pause();
                 RadioEngine.isPlaying = false;
-                if (typeof app !== 'undefined') app.showTab('radio');
-                alert("انتهى الوقت، تم إيقاف البث.");
+                if (typeof app !== 'undefined') {
+                    app.showTab('radio');
+                    app.showAlert("انتهى الوقت، تم إيقاف البث.");
+                }
             }
         }, minutes * 60 * 1000);
     },
@@ -24,7 +27,7 @@ const SettingsEngine = {
         const wasPlaying = RadioEngine.isPlaying;
         RadioEngine.audio.src = url;
         if (wasPlaying) RadioEngine.audio.play();
-        alert("تم تغيير جودة البث");
+        if (typeof app !== 'undefined') app.showAlert("تم تغيير جودة البث");
     },
 
     render(container) {
