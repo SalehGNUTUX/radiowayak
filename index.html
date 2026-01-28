@@ -17,53 +17,54 @@
             background: #000; color: #fff; margin: 0; overflow: hidden;
         }
 
-        /* السلايدر كخلفية كاملة */
         #slider-anchor {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            width: 100vw;
-            height: 100vh;
+            position: fixed; inset: 0; z-index: -1;
+            width: 100vw; height: 100vh;
         }
         .swiper-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.35); 
-        }
-
-        .ios-glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3);
         }
 
         .logo-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
+            position: fixed; top: 25px; right: 25px; z-index: 999;
+            width: 100px; cursor: pointer; border-radius: 15px;
+            transition: all 0.5s ease;
+        }
+        .logo-container:hover { transform: scale(1.1) rotate(3deg); }
+        .logo-top-right { width: 100%; height: auto; display: block; }
+
+        .ios-glass {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo-top-right {
-            width: 80px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .logo-top-right:hover {
-            transform: scale(1.1);
-        }
-
-        /* تنسيق أيقونات التواصل */
-        .social-link img {
+        /* تنسيق الأيقونات مع نظام الاحتياط */
+        .social-link {
+            position: relative;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
-            opacity: 0.8;
         }
-        .social-link:hover img {
-            transform: translateY(-3px);
-            opacity: 1;
+        .social-link img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 2;
+        }
+        .social-link:hover { transform: translateY(-3px); filter: brightness(1.2); }
+
+        /* أيقونة احتياطية تظهر فقط إذا فشلت الصورة */
+        .fallback-icon {
+            position: absolute;
+            font-size: 10px;
+            color: #3b82f6;
+            z-index: 1;
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -71,54 +72,62 @@
 
     <div id="slider-anchor"></div>
 
-    <div class="logo-container" onclick="location.reload()" title="إعادة تنشيط الموقع">
+    <div class="logo-container" onclick="location.reload()">
         <img src="logo_w2_dMEr-CXiI7FcuA-HT2GJ5.svg" class="logo-top-right" alt="Logo">
     </div>
 
-    <div id="app" class="h-screen w-full flex flex-col items-center justify-between p-6 relative">
-        
+    <div id="app" class="h-screen w-full flex flex-col items-center justify-between p-4 relative">
+
         <main id="content-area" class="flex-1 w-full max-w-lg z-10 flex flex-col items-center justify-center overflow-hidden"></main>
 
-        <div class="w-full max-w-md z-20 flex flex-col items-center gap-4">
-            <nav class="w-full ios-glass rounded-full p-2 flex justify-around items-center shadow-2xl">
-                <button onclick="app.showTab('radio')" id="btn-radio" class="nav-btn p-4 rounded-full transition-all">الراديو</button>
-                <button onclick="app.showTab('schedule')" id="btn-schedule" class="nav-btn p-4 rounded-full text-white/30 transition-all">الجدول</button>
-                <button onclick="app.showTab('news')" id="btn-news" class="nav-btn p-4 rounded-full text-white/30 transition-all">الأخبار</button>
-                <button onclick="app.showTab('settings')" id="btn-settings" class="nav-btn p-4 rounded-full text-white/30 transition-all">الإعدادات</button>
+        <div class="w-full max-w-md z-20 flex flex-col items-center gap-4 mb-2">
+
+            <nav class="w-full ios-glass rounded-full p-1.5 flex justify-around items-center shadow-2xl">
+                <button onclick="app.showTab('radio')" id="btn-radio" class="nav-btn px-6 py-3 rounded-full transition-all">الراديو</button>
+                <button onclick="app.showTab('schedule')" id="btn-schedule" class="nav-btn px-6 py-3 rounded-full text-white/30 transition-all text-sm">الجدول</button>
+                <button onclick="app.showTab('news')" id="btn-news" class="nav-btn px-6 py-3 rounded-full text-white/30 transition-all text-sm">الأخبار</button>
+                <button onclick="app.showTab('settings')" id="btn-settings" class="nav-btn px-6 py-3 rounded-full text-white/30 transition-all text-sm">الإعدادات</button>
             </nav>
 
-            <footer class="flex flex-col items-center gap-3 pb-2">
-                <div class="flex gap-5 items-center">
-                    <a href="https://play.google.com/store/apps/details?id=co.median.android.ynkwaj&hl=ar&pli=1" target="_blank" class="social-link">
-                        <img src="imageSlider/راديو وياك_files/playstore.png" class="w-6 h-6" alt="Play Store">
+            <footer class="w-full text-center py-2 space-y-4">
+                <div class="flex justify-center items-center gap-5">
+                    <a href="https://www.facebook.com/wayaklive" target="_blank" class="social-link">
+                        <img src="imageSlider/راديو وياك_files/facebook.png" onerror="this.style.display='none'" alt="FB">
+                        <span class="fallback-icon">FB</span>
                     </a>
                     <a href="https://t.me/radiowayak" target="_blank" class="social-link">
-                        <img src="imageSlider/راديو وياك_files/telegram.png" class="w-6 h-6" alt="Telegram">
+                        <img src="imageSlider/راديو وياك_files/telegram.png" onerror="this.style.display='none'" alt="TG">
+                        <span class="fallback-icon">TG</span>
                     </a>
                     <a href="https://bsky.app/profile/radiowayak.bsky.social" target="_blank" class="social-link">
-                        <img src="imageSlider/راديو وياك_files/bsky.social.png" class="w-6 h-6" alt="BlueSky">
+                        <img src="imageSlider/راديو وياك_files/bsky.social.png" onerror="this.style.display='none'" alt="BS">
+                        <span class="fallback-icon">BS</span>
                     </a>
                     <a href="https://mastodon.social/@RadioWayak" target="_blank" class="social-link">
-                        <img src="imageSlider/راديو وياك_files/mastodon.png" class="w-6 h-6" alt="Mastodon">
+                        <img src="imageSlider/راديو وياك_files/mastodon.png" onerror="this.style.display='none'" alt="MS">
+                        <span class="fallback-icon">MS</span>
                     </a>
-                    <a href="https://www.facebook.com/wayaklive" target="_blank" class="social-link">
-                        <img src="imageSlider/راديو وياك_files/facebook.png" class="w-6 h-6" alt="Facebook">
+                    <a href="https://play.google.com/store/apps/details?id=co.median.android.ynkwaj" target="_blank" class="social-link">
+                        <img src="imageSlider/راديو وياك_files/playstore.png" onerror="this.style.display='none'" alt="PS">
+                        <span class="fallback-icon">PS</span>
                     </a>
-                    <a href="mailto:radiowayak@gmail.com" class="social-link" title="راسلنا عبر البريد">
-                        <svg class="w-6 h-6 text-white/70 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <a href="mailto:radiowayak@gmail.com" class="social-link">
+                        <svg width="24" height="24" fill="white" style="opacity:0.7" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                     </a>
                 </div>
-                
-                <div class="text-white/40 text-[11px] font-medium">
+
+                <p class="text-[11px] text-white/40 font-medium tracking-wide">
                     راديو وياك ©2026© Radiowayak
-                </div>
+                </p>
             </footer>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="imageSlider/راديو وياك_files/swiper-bundle.min.js"></script>
     <script src="js/radio-engine.js"></script>
+    <script src="js/schedule-data.js"></script>
     <script src="js/news-engine.js"></script>
+    <script src="js/settings-engine.js"></script>
     <script src="js/slider-engine.js"></script>
     <script src="js/app-logic.js"></script>
 </body>
