@@ -4,7 +4,9 @@ const app = {
     animationId: null,
 
     async init() {
-        RadioEngine.init();
+        if (typeof RadioEngine !== 'undefined') {
+            RadioEngine.init();
+        }
         this.showTab('radio');
         this.updateRadioInfo();
         this.updateInterval = setInterval(() => this.updateRadioInfo(), 10000);
@@ -12,6 +14,7 @@ const app = {
 
     async updateRadioInfo() {
         try {
+            if (typeof RadioEngine === 'undefined') return;
             const meta = await RadioEngine.getMetadata();
             const titleEl = document.getElementById('track-title');
             const artistEl = document.getElementById('track-artist');
@@ -19,8 +22,6 @@ const app = {
 
             if (titleEl) titleEl.innerText = meta.title || "راديو وياك";
             if (artistEl) artistEl.innerText = meta.artist || "بث مباشر";
-
-            // تحديث صورة القارئ/البرنامج في شريط التحكم
             if (artEl && meta.art) {
                 artEl.src = meta.art;
             }
@@ -43,8 +44,12 @@ const app = {
 
         if (tab === 'radio') this.renderRadio(content);
         else if (tab === 'schedule') this.renderSchedule(content);
-        else if (tab === 'news' && typeof NewsEngine !== 'undefined') NewsEngine.render(content);
-        else if (tab === 'settings' && typeof SettingsEngine !== 'undefined') SettingsEngine.render(content);
+        else if (tab === 'news') {
+            if (typeof NewsEngine !== 'undefined') NewsEngine.render(content);
+        }
+        else if (tab === 'settings') {
+            if (typeof SettingsEngine !== 'undefined') SettingsEngine.render(content);
+        }
     },
 
     renderRadio(container) {
@@ -57,7 +62,7 @@ const app = {
         <div class="ios-glass w-full p-4 rounded-[2.5rem] flex items-center gap-4 border border-white/10 shadow-2xl">
         <div class="w-16 h-16 flex-shrink-0">
         <img id="album-art" src="album_art.1766384036.jpg"
-        class="w-full h-full rounded-2xl object-cover shadow-lg transition-transform duration-500 ${RadioEngine.isPlaying ? 'scale-105' : ''}">
+        class="w-full h-full rounded-2xl object-cover shadow-lg transition-transform duration-500 ${(typeof RadioEngine !== 'undefined' && RadioEngine.isPlaying) ? 'scale-105' : ''}">
         </div>
         <div class="flex-1 text-right overflow-hidden">
         <h1 id="track-title" class="font-bold truncate text-white text-lg">راديو وياك</h1>
@@ -65,23 +70,44 @@ const app = {
         </div>
         <button onclick="app.toggleRadio()" class="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-all">
         <div id="play-icon-svg">
-        ${RadioEngine.isPlaying ?
+        ${(typeof RadioEngine !== 'undefined' && RadioEngine.isPlaying) ?
             '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"/></svg>' :
             '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'}
             </div>
             </button>
             </div>
-            </div>
-            `;
-            // تشغيل السلايدر في الخلفية
-            SliderEngine.render('slider-anchor');
-            if (RadioEngine.isPlaying) this.startVisualizer();
+            </div>`;
+
+            if (typeof SliderEngine !== 'undefined') SliderEngine.render('slider-anchor');
+            if (typeof RadioEngine !== 'undefined' && RadioEngine.isPlaying) this.startVisualizer();
             this.updateRadioInfo();
+    },
+
+    renderSchedule(container) {
+        if (typeof ScheduleData === 'undefined') {
+            container.innerHTML = '<div class="p-10 text-center opacity-50">لا يمكن تحميل الجدول حالياً</div>';
+            return;
+        }
+
+        const items = ScheduleData.map(item => `
+        <div class="ios-glass p-5 rounded-[2rem] flex gap-4 mb-4 border border-white/5">
+        <div class="text-blue-400 font-bold font-mono text-sm">${item.time} <span class="text-[10px] opacity-70">${item.period || ''}</span></div>
+        <div class="text-right flex-1">
+        <div class="font-bold text-sm">${item.title}</div>
+        <div class="text-[10px] opacity-50 tracking-wide">${item.presenter}</div>
+        </div>
+        </div>`).join('');
+
+        container.innerHTML = `
+        <div class="p-4 w-full h-full overflow-y-auto no-scrollbar">
+        <h2 class="text-2xl font-bold mb-6 italic border-r-4 border-blue-500 pr-3">جدول البرامج</h2>
+        <div class="pb-10">${items}</div>
+        </div>`;
     },
 
     startVisualizer() {
         const canvas = document.getElementById('visualizer-canvas');
-        if (!canvas || !RadioEngine.analyser) return;
+        if (!canvas || typeof RadioEngine === 'undefined' || !RadioEngine.analyser) return;
         const ctx = canvas.getContext('2d');
         const analyser = RadioEngine.analyser;
         const data = new Uint8Array(analyser.frequencyBinCount);
@@ -103,6 +129,7 @@ const app = {
     },
 
     toggleRadio() {
+        if (typeof RadioEngine === 'undefined') return;
         const playing = RadioEngine.toggle();
         const icon = document.getElementById('play-icon-svg');
         const img = document.getElementById('album-art');
@@ -116,19 +143,6 @@ const app = {
             if (img) img.classList.remove('scale-105');
             cancelAnimationFrame(this.animationId);
         }
-    },
-
-    renderSchedule(container) {
-        const items = ScheduleData.map(item => `
-        <div class="ios-glass p-5 rounded-[2rem] flex gap-4 mb-4">
-        <div class="text-blue-400 font-bold">${item.time}</div>
-        <div class="text-right flex-1">
-        <div class="font-bold">${item.title}</div>
-        <div class="text-xs opacity-50">${item.presenter}</div>
-        </div>
-        </div>
-        `).join('');
-        container.innerHTML = `<div class="p-4 w-full h-full overflow-y-auto custom-scrollbar"><h2 class="text-2xl font-bold mb-6 italic">جدول البرامج</h2><div class="pb-20">${items}</div></div>`;
     }
 };
 
